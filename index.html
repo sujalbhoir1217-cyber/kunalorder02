@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    color: white;
+}
+
+/* CENTER */
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/* TOP TEXT */
+.top-text {
+    color: gold;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px gold;
+}
+
+/* BUTTON */
+.btn {
+    padding: 18px 40px;
+    font-size: 20px;
+    color: gold;
+    background: transparent;
+    border: 2px solid gold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 15px gold;
+}
+
+.btn:hover {
+    background: gold;
+    color: black;
+    box-shadow: 0 0 30px gold;
+}
+
+/* MAIN */
+#main {
+    display: none;
+    text-align: center;
+}
+
+/* SLIDESHOW */
+.photo {
+    width: 260px;
+    border-radius: 20px;
+    margin-top: 30px;
+    box-shadow: 0 0 30px gold;
+    opacity: 0;
+    transition: 1.5s;
+}
+
+/* HEADING */
+h1 {
+    color: gold;
+    margin-top: 20px;
+    text-shadow: 0 0 20px gold;
+}
+
+/* MESSAGE */
+#message {
+    font-size: 18px;
+    margin-top: 15px;
+    width: 80%;
+    margin: auto;
+    text-shadow: 0 0 10px gold;
+}
+
+/* LOVE BUTTON */
+.love-btn {
+    margin-top: 25px;
+    padding: 12px 25px;
+    border: 2px solid gold;
+    background: transparent;
+    color: gold;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 10px gold;
+    display: inline-block;
+}
+
+/* LETTER BOX */
+#letterBox {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    max-width: 400px;
+    transform: translate(-50%, -50%);
+    background: black;
+    border: 2px solid gold;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 30px gold;
+    text-align: center;
+    z-index: 10;
+}
+
+/* CANVAS */
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- START -->
+<div class="center" id="start">
+    <div class="top-text">✨ I have a surprise for you ✨</div>
+    <button class="btn" onclick="start()">Tap to Open</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+    <img src="Kunalphoto.jpeg" class="photo" id="photo">
+    <h1>🎉 Happy Birthday Shraddha 🎉</h1>
+    <p id="message"></p>
+
+    <button class="love-btn" onclick="openLetter()">💌 Open Your Letter</button>
+</div>
+
+<!-- LETTER -->
+<div id="letterBox">
+    <h2 style="color:gold;">💖 A Special Letter 💖</h2>
+    <p>
+        You are one of the most special people in life ✨<br><br>
+        Your smile, your vibe, everything about you is just amazing ❤️<br><br>
+        May your life always be filled with happiness, love and success 🎂💫<br><br>
+        Once again Happy Birthday 💖
+    </p>
+    <br>
+    <button class="btn" onclick="closeLetter()">Close</button>
+</div>
+
+<audio id="music" src="Kunalsong.mp3"></audio>
+
+<script>
+
+/* START */
+function start() {
+    let pass = prompt("Enter Password 🔐");
+
+    if(pass === "1631") {
+        document.getElementById("start").style.display = "none";
+        document.getElementById("main").style.display = "block";
+
+        document.getElementById("music").play();
+        startParticles();
+
+        startSlideshow();
+
+        typeText("Wishing you the happiest birthday! 🎂✨ May your day be filled with love and happiness ❤️");
+    } else {
+        alert("Wrong Password 😅");
+    }
+}
+
+/* TYPEWRITER */
+function typeText(text) {
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            document.getElementById("message").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 50);
+        }
+    }
+    typing();
+}
+
+/* SLIDESHOW */
+let photos = ["Kunalphoto.jpeg", "Kunalphoto02.jpeg", "Kunalphoto03.jpeg"];
+let index = 0;
+
+function startSlideshow() {
+    const img = document.getElementById("photo");
+
+    function showNext() {
+        img.style.opacity = 0;
+
+        setTimeout(() => {
+            img.src = photos[index];
+            img.style.opacity = 1;
+            index = (index + 1) % photos.length;
+        }, 700);
+    }
+
+    showNext();
+    setInterval(showNext, 3000);
+}
+
+/* LETTER */
+function openLetter() {
+    document.getElementById("letterBox").style.display = "block";
+}
+
+function closeLetter() {
+    document.getElementById("letterBox").style.display = "none";
+}
+
+/* PARTICLES */
+function startParticles() {
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    for (let i = 0; i < 120; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 4,
+            speedY: Math.random() * 2 + 1
+        });
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "gold";
+
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
+            p.y += p.speedY;
+
+            if (p.y > canvas.height) {
+                p.y = 0;
+                p.x = Math.random() * canvas.width;
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+</script>
+
+</body>
+</html>
